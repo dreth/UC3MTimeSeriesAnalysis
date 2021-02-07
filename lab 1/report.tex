@@ -1,0 +1,356 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
+\else % if luatex or xelatex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{hyperref}
+\hypersetup{
+            pdftitle={Laboratory 1},
+            pdfauthor={Daniel Alonso},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+\title{Laboratory 1}
+\author{Daniel Alonso}
+\date{February 7, 2021}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(dplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{read-data}{%
+\section{1. Read data}\label{read-data}}
+
+We first pick a time series from the \emph{series.xls} file attached to
+the project and we create a \emph{.csv} file with the selected time
+series.
+
+We then select the \emph{bits} column, excluding the time periods.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{internet_hits<-}\KeywordTok{read.csv}\NormalTok{(}\DataTypeTok{file=}\StringTok{"./internet_hits.csv"}\NormalTok{, }\DataTypeTok{header=}\OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Looking at our data we notice that June 7th is incomplete, as it starts
+at 7:00, while the rest of the days start at 00:00, therefore we drop
+this day for consistency.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{time <-}\StringTok{ }\NormalTok{internet_hits}\OperatorTok{$}\NormalTok{time[}\DecValTok{18}\OperatorTok{:}\KeywordTok{length}\NormalTok{(internet_hits}\OperatorTok{$}\NormalTok{time)]}
+\NormalTok{internet_hits <-}\StringTok{ }\NormalTok{internet_hits}\OperatorTok{$}\NormalTok{bits[}\DecValTok{18}\OperatorTok{:}\KeywordTok{length}\NormalTok{(internet_hits}\OperatorTok{$}\NormalTok{bits)]}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{define-the-time-series-object}{%
+\section{2. Define the time series
+object}\label{define-the-time-series-object}}
+
+We use the \emph{ts} function to define the time series object. We start
+June 8th, 2005 and our frequency is hourly.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{hits<-}\KeywordTok{ts}\NormalTok{(internet_hits, }\DataTypeTok{freq=}\DecValTok{24}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\newpage
+
+\hypertarget{plot-the-time-series}{%
+\section{3. Plot the time series}\label{plot-the-time-series}}
+
+We proceed to plot the hourly internet traffic between June 7th and July
+28th, 2005.
+
+\hypertarget{first-lets-plot-traffic-for-monday-june-8th-2005}{%
+\subsection{First let's plot traffic for Monday June 8th,
+2005:}\label{first-lets-plot-traffic-for-monday-june-8th-2005}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\NormalTok{june8th <-}\StringTok{ }\NormalTok{hits[}\DecValTok{1}\OperatorTok{:}\DecValTok{24}\NormalTok{]}
+\KeywordTok{plot}\NormalTok{(june8th,}\DataTypeTok{main=}\StringTok{"Hourly internet traffic for June 8th, 2005 in bits"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{./figures/unnamed-chunk-5-1.pdf}
+
+We can see that daily traffic peak hours is around lunchtime, between
+11:00 and 14:00, showing significantly more traffic than any other time
+during the day.
+
+We see that mornings are more active than late night and traffic remains
+somewhat consistent between 8:00 and 16:00 with a sharp drop around
+17:00 and onwards.
+
+The traffic for this day bottoms at around 4:00, as most people are
+probably sleeping.
+
+\newpage
+
+\hypertarget{second-lets-plot-traffic-for-saturday-june-11th-2005}{%
+\subsection{Second: let's plot traffic for Saturday June 11th,
+2005:}\label{second-lets-plot-traffic-for-saturday-june-11th-2005}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\NormalTok{june11th <-}\StringTok{ }\NormalTok{hits[}\DecValTok{73}\OperatorTok{:}\DecValTok{96}\NormalTok{]}
+\KeywordTok{plot}\NormalTok{(june11th,}\DataTypeTok{main=}\StringTok{"Hourly internet traffic for June 11th, 2005 in bits"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{./figures/unnamed-chunk-6-1.pdf}
+
+During weekends activity is reduced significantly. We see that the
+traffic peak hours now extend up to 19:00, so around 2 hours longer than
+weekdays, however, overall, total hourly traffic is around half that of
+weekdays with the exception of nights, where hourly traffic is more
+similar to that of weekdays.
+
+\newpage
+
+\hypertarget{overall-traffic}{%
+\subsection{Overall traffic}\label{overall-traffic}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(hits,}\DataTypeTok{main=}\StringTok{"Hourly internet traffic between June 7th and July 28th, 2005 in bits"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{./figures/unnamed-chunk-7-1.pdf}
+
+We can clearly see that the seasonal pattern is repeated weekly, where
+weekdays are high traffic and weekends are low traffic days. As soon as
+the weekend is over.
+
+\newpage
+
+\hypertarget{logarithmic-transformation}{%
+\section{4. logarithmic
+transformation}\label{logarithmic-transformation}}
+
+From the plots we can tell the data is homocedastic, therefore we do not
+need to perform a log transformation. There's clearly a strong
+seasonality aspect to the data which might create a perception of
+heterocedasticity in daily timeframes, but not in hourly timeframes.
+
+\hypertarget{first-difference}{%
+\section{5. First difference}\label{first-difference}}
+
+The time series does not have a trend, therefore we do not have to take
+the first difference.
+
+\hypertarget{seasonal-difference}{%
+\section{6. Seasonal difference}\label{seasonal-difference}}
+
+As our data is hourly, we take the 120th-difference (5 days) to attempt
+to eliminate seasonality.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ddlhits<-}\KeywordTok{diff}\NormalTok{(dlhits, }\DataTypeTok{lag=}\DecValTok{120}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(ddlhits, }\DataTypeTok{main=}\StringTok{"seasonal series"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{./figures/unnamed-chunk-8-1.pdf}
+
+\newpage
+
+\hypertarget{plots}{%
+\section{7. plots}\label{plots}}
+
+We plot the seasonal and original series and we obtain the following:
+
+\begin{itemize}
+\item
+  We can see the data is homocedastic and has no increasing/decreasing
+  trend, therefore it is not stationary.
+\item
+  We also notice that the seasonal series plot does not show any
+  pattern, neither trend or seasonality, which we can pretty much deem
+  white noise. We can see this time series is stationary.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(hits, }\DataTypeTok{main=}\StringTok{"original series"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(ddlhits, }\DataTypeTok{main=}\StringTok{"seasonal series"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{./figures/unnamed-chunk-9-1.pdf}
+
+\newpage
+
+\hypertarget{acf-and-pacf}{%
+\section{8. acf and pacf}\label{acf-and-pacf}}
+
+Here we plot autocorrelations and partial autocorrelations. This way we
+can confirm the accuracy of the patterns we observe in previous steps,
+but might be hidden from us.
+
+\includegraphics{./figures/unnamed-chunk-10-1.pdf}
+
+For the acf plot for \emph{hits} we notice that there's a clear pattern,
+even clearer than before, we confirm that there is certainly a strong
+seasonality to the data. The event repeats itself consistently. The
+event has long run memory (in its own timeframe). And we clearly see
+that essentially all displayed coefficients are significant, as they all
+cross our significance boundaries.
+
+For the pacf plot for \emph{hits} we see that there's only significant
+wicks along seasonal limits along with the 2 first wicks.
+
+For the acf and pacf plots for \emph{ddlhits} where we attempt to remove
+seasonality we can see significant wicks, but this pattern is much less
+clear than in previous plots. Therefore, it's stationary.
+
+\hypertarget{ljung-box-test}{%
+\section{9. Ljung-Box test}\label{ljung-box-test}}
+
+For the Ljung-Box test we test the following:
+
+\(H_0\): the model has no dependencies
+
+\(H_1\): the model has dependencies
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{Box.test}\NormalTok{(hits,}\DataTypeTok{lag=}\DecValTok{24}\NormalTok{)}
+\CommentTok{#> }
+\CommentTok{#>  Box-Pierce test}
+\CommentTok{#> }
+\CommentTok{#> data:  hits}
+\CommentTok{#> X-squared = 7129.5, df = 24, p-value < 2.2e-16}
+\end{Highlighting}
+\end{Shaded}
+
+As to the results looking at our P-vals, for the first test we already
+have observed and pointed out that the seasonality is present quite
+strongly in the time series. The test has an extremely large test
+statistic and a p-value of essentially zero. This, once again, confirms
+seasonality.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{Box.test}\NormalTok{(ddlhits,}\DataTypeTok{lag=}\DecValTok{24}\NormalTok{)}
+\CommentTok{#> }
+\CommentTok{#>  Box-Pierce test}
+\CommentTok{#> }
+\CommentTok{#> data:  ddlhits}
+\CommentTok{#> X-squared = 2037.2, df = 24, p-value < 2.2e-16}
+\end{Highlighting}
+\end{Shaded}
+
+Our last test shows a significantly decreased test statistic versus the
+test conducted previously, however, we still reject the null hypothesis.
+
+\end{document}
