@@ -249,12 +249,12 @@ the first difference.
 \hypertarget{seasonal-difference}{%
 \section{6. Seasonal difference}\label{seasonal-difference}}
 
-As our data is hourly, we take the 120th-difference (5 days) to attempt
+As our data is hourly, we take the 168th-difference (7 days) to attempt
 to eliminate seasonality.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{ddlhits<-}\KeywordTok{diff}\NormalTok{(dlhits, }\DataTypeTok{lag=}\DecValTok{120}\NormalTok{)}
+\NormalTok{ddlhits<-}\KeywordTok{diff}\NormalTok{(hits, }\DataTypeTok{lag=}\DecValTok{168}\NormalTok{)}
 \KeywordTok{plot}\NormalTok{(ddlhits, }\DataTypeTok{main=}\StringTok{"seasonal series"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -346,7 +346,7 @@ seasonality.
 \CommentTok{#>  Box-Pierce test}
 \CommentTok{#> }
 \CommentTok{#> data:  ddlhits}
-\CommentTok{#> X-squared = 2037.2, df = 24, p-value < 2.2e-16}
+\CommentTok{#> X-squared = 5376.5, df = 24, p-value < 2.2e-16}
 \end{Highlighting}
 \end{Shaded}
 

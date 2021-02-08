@@ -99,10 +99,10 @@ The time series does not have a trend, therefore we do not have to take the firs
 
 # 6. Seasonal difference
 
-As our data is hourly, we take the 120th-difference (5 days) to attempt to eliminate seasonality.
+As our data is hourly, we take the 168th-difference (7 days) to attempt to eliminate seasonality.
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE}
-ddlhits<-diff(dlhits, lag=120)
+ddlhits<-diff(hits, lag=168)
 plot(ddlhits, main="seasonal series")
 ```
 
