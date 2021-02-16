@@ -1,0 +1,390 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
+\else % if luatex or xelatex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{hyperref}
+\hypersetup{
+            pdftitle={Laboratory 2},
+            pdfauthor={Daniel Alonso},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+\title{Laboratory 2}
+\author{Daniel Alonso}
+\date{February 16, 2021}
+
+\begin{document}
+\maketitle
+
+\hypertarget{use-of-command-arima.sim-to-simulate-arima-processes}{%
+\section{1. Use of command ``arima.sim'' to simulate ARIMA
+processes}\label{use-of-command-arima.sim-to-simulate-arima-processes}}
+
+\hypertarget{ar1}{%
+\subsection{\texorpdfstring{\(AR(1)\)}{AR(1)}}\label{ar1}}
+
+We first simulate an \(AR(1)\) process:
+
+\includegraphics{./figures/unnamed-chunk-1-1.pdf}
+
+\hypertarget{ar2}{%
+\subsection{\texorpdfstring{\(AR(2)\)}{AR(2)}}\label{ar2}}
+
+We then simulate an \(AR(2)\) process:
+
+\includegraphics{./figures/unnamed-chunk-2-1.pdf}
+
+\hypertarget{ar4}{%
+\subsection{\texorpdfstring{\(AR(4)\)}{AR(4)}}\label{ar4}}
+
+We then simulate an \(AR(4)\) process:
+
+\includegraphics{./figures/unnamed-chunk-3-1.pdf}
+
+\hypertarget{simulates-n-arp-processes-with-n-observationsparameter-phi-standard-deviation-of-a-s}{%
+\section{\texorpdfstring{2.simulates N \(AR(p)\) processes \#\#\# With
+\(n\) observations,parameter \(\phi\) standard deviation of
+\(a = s\)}{2.simulates N AR(p) processes \#\#\# With n observations,parameter \textbackslash{}phi standard deviation of a = s}}\label{simulates-n-arp-processes-with-n-observationsparameter-phi-standard-deviation-of-a-s}}
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{arfun<-}\ControlFlowTok{function}\NormalTok{(N,n,phi,s,c)\{}
+\NormalTok{    M=}\KeywordTok{matrix}\NormalTok{(}\DataTypeTok{ncol=}\NormalTok{N,}\DataTypeTok{nrow=}\NormalTok{n)}
+    \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{N)\{}
+\NormalTok{        x=}\KeywordTok{arima.sim}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\DataTypeTok{ar=}\NormalTok{phi),}\DataTypeTok{sd=}\NormalTok{s,n)}
+\NormalTok{        M[,i]=x}\OperatorTok{+}\NormalTok{c}
+\NormalTok{    \}}
+    \CommentTok{#Computes mean, variance ACF and PACF}
+\NormalTok{    variance=}\KeywordTok{matrix}\NormalTok{(}\DataTypeTok{ncol=}\NormalTok{N,}\DataTypeTok{nrow=}\DecValTok{1}\NormalTok{)}
+\NormalTok{    m=}\KeywordTok{matrix}\NormalTok{(}\DataTypeTok{ncol=}\NormalTok{N,}\DataTypeTok{nrow=}\DecValTok{1}\NormalTok{)}
+\NormalTok{    rho=}\KeywordTok{matrix}\NormalTok{(}\DataTypeTok{ncol=}\NormalTok{N,}\DataTypeTok{nrow=}\DecValTok{25}\NormalTok{)}
+\NormalTok{    pi=}\KeywordTok{matrix}\NormalTok{(}\DataTypeTok{ncol=}\NormalTok{N,}\DataTypeTok{nrow=}\DecValTok{24}\NormalTok{)}
+    \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{N)\{}
+\NormalTok{        variance[i]=}\KeywordTok{var}\NormalTok{(M[,i])}
+\NormalTok{        m[i]=}\KeywordTok{mean}\NormalTok{(M[,i])}
+\NormalTok{        r=}\KeywordTok{acf}\NormalTok{(M[,i], }\DataTypeTok{lag.max=}\DecValTok{24}\NormalTok{,}\DataTypeTok{plot=}\OtherTok{FALSE}\NormalTok{)}
+\NormalTok{        rho[,i]=r}\OperatorTok{$}\NormalTok{acf}
+\NormalTok{        pr=}\KeywordTok{acf}\NormalTok{(M[,i],}\DataTypeTok{lag.max=}\DecValTok{24}\NormalTok{,}\DataTypeTok{type=}\StringTok{"partial"}\NormalTok{,}\DataTypeTok{plot=}\OtherTok{FALSE}\NormalTok{)}
+\NormalTok{        pi[,i]=pr}\OperatorTok{$}\NormalTok{acf}
+\NormalTok{    \}}
+    \CommentTok{#boxplots for the ACF and PACF of lags 1 to 4}
+    \KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+    \KeywordTok{boxplot}\NormalTok{(rho[}\DecValTok{2}\NormalTok{,],rho[}\DecValTok{3}\NormalTok{,],rho[}\DecValTok{4}\NormalTok{,],rho[}\DecValTok{5}\NormalTok{,], }\DataTypeTok{main=}\StringTok{"ACF coefficients for lags 1 to 4"}\NormalTok{)}
+    \KeywordTok{boxplot}\NormalTok{(pi[}\DecValTok{1}\NormalTok{,],pi[}\DecValTok{2}\NormalTok{,],pi[}\DecValTok{3}\NormalTok{,],pi[}\DecValTok{4}\NormalTok{,], }\DataTypeTok{main=}\StringTok{"PACF coefficients for lags 1 to 4"}\NormalTok{)}
+    \KeywordTok{plot}\NormalTok{(variance[}\DecValTok{1}\OperatorTok{:}\NormalTok{N],}\DataTypeTok{type=}\StringTok{"l"}\NormalTok{, }\DataTypeTok{main=}\StringTok{"Variance of the generated processes"}\NormalTok{)}
+    \KeywordTok{plot}\NormalTok{(m[}\DecValTok{1}\OperatorTok{:}\NormalTok{N],}\DataTypeTok{type=}\StringTok{"l"}\NormalTok{, }\DataTypeTok{main=}\StringTok{"Mean of the generated processes"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize
+
+\hypertarget{simulating-ar1-process-with-arfun}{%
+\section{\texorpdfstring{Simulating \(AR(1)\) process with
+\textbf{arfun}}{Simulating AR(1) process with arfun}}\label{simulating-ar1-process-with-arfun}}
+
+For all simulations we use 2000 iterations of 70 observations and
+\(c = 0\).
+
+\hypertarget{using-a-positive-coefficient}{%
+\subsection{Using a positive
+coefficient}\label{using-a-positive-coefficient}}
+
+\hypertarget{with-phi-0.6.}{%
+\subsubsection{\texorpdfstring{With
+\(\phi = 0.6\).}{With \textbackslash{}phi = 0.6.}}\label{with-phi-0.6.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{arfun}\NormalTok{(}\DecValTok{2000}\NormalTok{, }\DecValTok{70}\NormalTok{, }\FloatTok{0.6}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{./figures/unnamed-chunk-5-1.pdf}
+
+We can see that the first few ACF coefficients are still showing a
+ladder-like structure. The median of the first boxplot in both the ACF
+and PACF plots is of almost \textasciitilde{}0.6.
+
+The variance is not huge, and from testing we know that it's less and
+less significantly variable as the number of samples and simulations
+increase simultaneously. Bias is also reduced significantly as these
+values increase. In fact, for a very large number of simulations, we
+notice no significant ACF or PACF coefs.
+
+The means oscillate around -0.3 and 0.3, while the variance goes to just
+under 1 up to a bit over 3.
+
+\hypertarget{using-a-negative-coefficient}{%
+\subsection{Using a negative
+coefficient}\label{using-a-negative-coefficient}}
+
+\hypertarget{with-phi--0.6}{%
+\subsubsection{\texorpdfstring{With
+\(\phi = -0.6\)}{With \textbackslash{}phi = -0.6}}\label{with-phi--0.6}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{arfun}\NormalTok{(}\DecValTok{2000}\NormalTok{, }\DecValTok{70}\NormalTok{, }\FloatTok{-0.6}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{./figures/unnamed-chunk-6-1.pdf}
+
+The pattern for the ACF plot oscillates as the powers of a negative
+value change sign depending on whether the exponent is even or odd. For
+the PACF coefficients, only the first one is significant. For the first
+PACF coefficient with a negative \emph{ar}, the value is pretty much
+\textasciitilde{} -0.6.
+
+The means oscillate around -0.2 and 0.2 with some outliers, while the
+variance is between 0.5 and 3.5 with most of the cases between 1 and 3.
+
+Here, in contrast to a positive \(\phi\), the significance of our ACF
+coefficients is not exactly smoothed down, and ACF coefficients remain
+significant, while only the first PACF coefficient is significant.
+
+\newpage
+
+\hypertarget{simulating-ar3-process-with-arfun}{%
+\section{\texorpdfstring{Simulating \(AR(3)\) process with
+\textbf{arfun}}{Simulating AR(3) process with arfun}}\label{simulating-ar3-process-with-arfun}}
+
+I have decided to include an \(AR(3)\) process to comparatively see what
+happens to significance in ACF and PACF plots, along with variance and
+mean, when the signs of \(\phi\) change, with multiple \(\phi\). All
+simulations are performed using 2000 iterations, 70 observations and
+\(c = 0\).
+
+\hypertarget{using-3-positive-coefficients}{%
+\subsection{Using 3 positive
+coefficients}\label{using-3-positive-coefficients}}
+
+\hypertarget{with-phi_1-0.3-phi_2-0.5-and-phi_3-0.1}{%
+\subsubsection{\texorpdfstring{With \(\phi_1 = 0.3, \phi_2 = 0.5\) and
+\(\phi_3 = 0.1\)}{With \textbackslash{}phi\_1 = 0.3, \textbackslash{}phi\_2 = 0.5 and \textbackslash{}phi\_3 = 0.1}}\label{with-phi_1-0.3-phi_2-0.5-and-phi_3-0.1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{arfun}\NormalTok{(}\DecValTok{2000}\NormalTok{, }\DecValTok{70}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\FloatTok{0.3}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.1}\NormalTok{), }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{./figures/unnamed-chunk-7-1.pdf}
+
+In this case we see ACF significance drops slowly vs the \(AR(1)\) case.
+For PACF only maybe our first and second coefficients are significant.
+
+The variance has much more extreme values and hovers (mostly) between 1
+and 4, however, there's plenty of peaks, and all much more significant
+than those of the \(AR(1)\) case.
+
+For the mean we notice a similar trend, however values tend to reach
+outside the interval \(y = (1,-1)\) much more often
+
+For a significantly higher amount of iterations, we notice that we
+increase the chances for high variance events to occur.
+
+\hypertarget{using-2-positive-and-1-negative-coefficients}{%
+\subsection{Using 2 positive and 1 negative
+coefficients}\label{using-2-positive-and-1-negative-coefficients}}
+
+\hypertarget{with-phi_1--0.3-phi_2-0.5-and-phi_3-0.1}{%
+\subsubsection{\texorpdfstring{With \(\phi_1 = -0.3, \phi_2 = 0.5\) and
+\(\phi_3 = 0.1\)}{With \textbackslash{}phi\_1 = -0.3, \textbackslash{}phi\_2 = 0.5 and \textbackslash{}phi\_3 = 0.1}}\label{with-phi_1--0.3-phi_2-0.5-and-phi_3-0.1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{arfun}\NormalTok{(}\DecValTok{2000}\NormalTok{, }\DecValTok{70}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\FloatTok{0.3}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.2}\NormalTok{), }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{./figures/unnamed-chunk-8-1.pdf}
+
+In the case where \(\phi_1\) is negative while the rest are postive, we
+notice the variance is significantly decreased, while our ACF and PACF
+coefficients remain significant for the first two lags. However they
+drop down quite quickly for the subsequent lags.
+
+\hypertarget{using-1-positive-and-2-negative-coefficients}{%
+\subsection{Using 1 positive and 2 negative
+coefficients}\label{using-1-positive-and-2-negative-coefficients}}
+
+\hypertarget{with-phi_1--0.3-phi_2--0.5-and-phi_3-0.1}{%
+\subsubsection{\texorpdfstring{With \(\phi_1 = -0.3, \phi_2 = -0.5\) and
+\(\phi_3 = 0.1\)}{With \textbackslash{}phi\_1 = -0.3, \textbackslash{}phi\_2 = -0.5 and \textbackslash{}phi\_3 = 0.1}}\label{with-phi_1--0.3-phi_2--0.5-and-phi_3-0.1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{arfun}\NormalTok{(}\DecValTok{2000}\NormalTok{, }\DecValTok{70}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\FloatTok{0.3}\NormalTok{, }\FloatTok{-0.5}\NormalTok{, }\FloatTok{0.2}\NormalTok{), }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{./figures/unnamed-chunk-9-1.pdf}
+
+This option also keeps variance lower, overall, while maybe slightly
+higher than the previous option. The mean is significantly less variable
+overall.
+
+The ACF and PACF coefficients seem to be boosted for the second lag vs
+the previous allocation of \(\phi\). Significance of such coefficients
+oscillates, as usual when using any negative \(\phi\), however it drops
+quite quickly for PACF, where the second lag is more significant than
+the first one.
+
+\hypertarget{using-3-negative-coefficients}{%
+\subsection{Using 3 negative
+coefficients}\label{using-3-negative-coefficients}}
+
+\hypertarget{with-phi_1--0.3-phi_2--0.5-and-phi_3--0.1}{%
+\subsubsection{\texorpdfstring{With \(\phi_1 = -0.3, \phi_2 = -0.5\) and
+\(\phi_3 = -0.1\)}{With \textbackslash{}phi\_1 = -0.3, \textbackslash{}phi\_2 = -0.5 and \textbackslash{}phi\_3 = -0.1}}\label{with-phi_1--0.3-phi_2--0.5-and-phi_3--0.1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{arfun}\NormalTok{(}\DecValTok{2000}\NormalTok{, }\DecValTok{70}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\FloatTok{0.3}\NormalTok{, }\FloatTok{-0.5}\NormalTok{, }\FloatTok{-0.2}\NormalTok{), }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{./figures/unnamed-chunk-10-1.pdf}
+
+When using 3 negative coefficients we yield an even lower mean, and much
+less variant one as well. Our variance is overall also significantly
+reduced. Significance for ACF coefficients drops in general as well,
+making them all perhaps less significant. Similarly with PACF
+coefficients, with the exception of perhaps the 2nd lag.
+
+\hypertarget{playing-with-values-slightly}{%
+\subsection{Playing with values
+slightly}\label{playing-with-values-slightly}}
+
+\hypertarget{with-phi_1--0.3-phi_2--0.1-and-phi_3--0.5}{%
+\subsubsection{\texorpdfstring{With \(\phi_1 = -0.3, \phi_2 = -0.1\) and
+\(\phi_3 = -0.5\)}{With \textbackslash{}phi\_1 = -0.3, \textbackslash{}phi\_2 = -0.1 and \textbackslash{}phi\_3 = -0.5}}\label{with-phi_1--0.3-phi_2--0.1-and-phi_3--0.5}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{arfun}\NormalTok{(}\DecValTok{2000}\NormalTok{, }\DecValTok{70}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\FloatTok{0.3}\NormalTok{, }\FloatTok{-0.1}\NormalTok{, }\FloatTok{-0.5}\NormalTok{), }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{./figures/unnamed-chunk-11-1.pdf}
+
+Changing which \(\phi\) is larger.smaller also yields an interesting
+result, where the 1st and 3rd lags seem to show the most significance
+for both ACF and PACF plots.
+
+\hypertarget{with-phi_1--0.3-phi_2--0.1-and-phi_3--0.5-1}{%
+\subsubsection{\texorpdfstring{With \(\phi_1 = -0.3, \phi_2 = -0.1\) and
+\(\phi_3 = -0.5\)}{With \textbackslash{}phi\_1 = -0.3, \textbackslash{}phi\_2 = -0.1 and \textbackslash{}phi\_3 = -0.5}}\label{with-phi_1--0.3-phi_2--0.1-and-phi_3--0.5-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{arfun}\NormalTok{(}\DecValTok{2000}\NormalTok{, }\DecValTok{70}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\FloatTok{0.1}\NormalTok{, }\FloatTok{-0.1}\NormalTok{, }\FloatTok{-0.5}\NormalTok{), }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{./figures/unnamed-chunk-12-1.pdf}
+
+Leveling down \(\phi_1\) and \(\phi_2\) to be the same value and also
+much higher than \(\phi_3\) basically removes the significance of the
+first lag.
+
+\end{document}
