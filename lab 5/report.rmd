@@ -1,0 +1,399 @@
+---
+title: 'Integrated processes, seasonal process, forecasting'
+author: 'Daniel Alonso'
+date: 'March 8th, 2021'
+output: 'pdf_document'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+collapse = TRUE,
+comment = '#>',
+fig.path = './figures/'
+)
+knitr::knit_engines$set(julia = JuliaCall::eng_juliacall)
+options(JULIA_HOME = '/home/dreth/julia/bin')
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(forecast)
+library(sarima)
+```
+
+# Simulation of a SARIMA (0,1,1)(0,1,1),12 process
+
+We simulate a Seasonal ARIMA of 300 observations and components $(p,d,q) = (0,1,1)$, $(P,D,Q) = (0,1,1)$ and $m = 12$. It also has $SMA = 0.3$, and $MA = -0.3$  
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, eval=FALSE}
+x<-sim_sarima(n=300,
+              model=list(ma=-0.3,sma=0.3,iorder=1,siorder=1,nseasons=12))
+```
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+plot.ts(x[15:300])
+```
+
+Here we can see the series has a trend upwards and exhibits seasonality (12), as defined in the simulation.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+acf(x[150:300],lag=48)
+```
+
+We can see a clearly slow decaying pattern, showing strong trend.
+
+We take first difference and plot a correlogram for it:
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+acf(diff(x[150:300]),lag=48)
+```
+
+And we can notice that there's a strong peak up every 12 periods (months). Therefore we take seasonal difference and plot a correlogram for it:
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+acf(diff(diff(x[150:300]),12),lag=48)
+```
+
+We have 2 peaks, the first two peaks corresponding with variance and period 1.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+pacf(diff(diff(x[150:300]),12),lag=48)
+```
+
+The PACF plot corroborates with the same observations highlighted earlier.
+
+# Simulation and forecasting of white noise
+
+We simulate a white noise process generating 200 normally distributed values. A constant is summed to the values (in our case 7). We only take the first 176 observations, then the next 24 observations are predicted.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+x_1=rnorm(200)+7
+bt<-window(x_1,1,176)
+fit<-ar.burg(bt)
+forecast<-predict(fit,n.ahead=24)
+ts.plot(x_1,lty=3, main="White noise with c and prediction")
+lines(bt,lwd=2)
+lines(forecast$pred,lwd=2,col="red")
+lines(forecast$pred+forecast$se*1.96,lwd=2,col="red")
+lines(forecast$pred-forecast$se*1.96,lwd=2,col="red")
+```
+
+Looking at this we can see that the most solid prediction we can make is a constant (especifically the constant we summed to the generated randomly distributed values, 7). 
+
+Our confidence interval is a 95%-CI, it represents $1.959964 \sigma^2$.
+
+# Simulation and forecasting of random walk
+
+We simulate 200 observations, out of which we use a window of 176 and predict the remaining 24. From our prediction range, we pick a straight line (even though when iterating this several times, lower and upper 95% confidence bounds can be quite good at forecasting), however, we have infinite variance for the prediction error if the amount of points to forecast increases.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+x_2=arima.sim(list(order=c(0,1,0)),200)
+bt<-window(x_2,1,176)
+fit<-arima(bt,order=c(0,1,0),include.mean=TRUE)
+forecast<-predict(fit,n.ahead=24)
+ts.plot(x_2,lty=3, main="Random walk and prediction")
+lines(bt,lwd=2)
+lines(forecast$pred,lwd=2,col="red")
+lines(forecast$pred+forecast$se*1.96,lwd=2,col="red")
+lines(forecast$pred-forecast$se*1.96,lwd=2,col="red")
+```
+
+# Simulation and forecasting of random walk plus drift
+
+We simulate a random walk with drift, where we have 200 observations, with a window of 176 observations. As before, we forecast 24 observations. The parameters are essentially the same as teh previous random walk, however, we have a $\mu = 0.4$ as a parameter and drift. Here we perform the straight line, average prediction, variance is increased gradually as the walk is projected in the future.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+x_3=arima.sim(list(order=c(0,1,0)),mean=0.4,200)
+bt<-window(x_3,1,176)
+predz<-rwf(bt,h=24,drift=TRUE,level=95)
+ts.plot(x_3,lty=3, main="Random walk plus drift and prediction")
+lines(bt,lwd=2)
+lines(predz$mean,lwd=2,col="red")
+lines(predz$lower,lwd=2,col="red")
+lines(predz$upper,lwd=2,col="red")
+```
+
+# Simulation and forecasting of an AR(1)
+
+When running the forecast for an AR(1) process we get interesting results:
+
+## With a very small coefficient
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+x_4=arima.sim(list(order=c(1,0,0), ar=0.1),200)
+bt<-window(x_4,1,176)
+fit<-arima(bt,order=c(1,0,0),include.mean=FALSE)
+forecast<-predict(fit,n.ahead=24)
+ts.plot(x_4,lty=3, main="AR(1) and prediction")
+lines(bt,lwd=2)
+lines(forecast$pred,lwd=2,col="red")
+lines(forecast$pred+forecast$se*1.96,lwd=2,col="red")
+lines(forecast$pred-forecast$se*1.96,lwd=2,col="red")
+```
+
+The prediction is pretty much zero, along with the confidence bounds, which are essentially the prediction plus or minus 2. Both are also straight lines.
+
+## With a larger coefficient
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+x_4=arima.sim(list(order=c(1,0,0), ar=0.95),200)
+bt<-window(x_4,1,176)
+fit<-arima(bt,order=c(1,0,0),include.mean=FALSE)
+forecast<-predict(fit,n.ahead=24)
+ts.plot(x_4,lty=3, main="AR(1) and prediction")
+lines(bt,lwd=2)
+lines(forecast$pred,lwd=2,col="red")
+lines(forecast$pred+forecast$se*1.96,lwd=2,col="red")
+lines(forecast$pred-forecast$se*1.96,lwd=2,col="red")
+```
+
+The larger the coefficient is, the least the forecast will resemble a straight line, but rather will be curves that eventually converge in a straight-ish line. This is quite variable though, and we can get lines that never 
+quite converge if the AR(1) process exhibits a significant trend.
+
+## With negative coefficient closer to zero
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+x_4=arima.sim(list(order=c(1,0,0), ar=-0.2),200)
+bt<-window(x_4,1,176)
+fit<-arima(bt,order=c(1,0,0),include.mean=FALSE)
+forecast<-predict(fit,n.ahead=24)
+ts.plot(x_4,lty=3, main="AR(1) and prediction")
+lines(bt,lwd=2)
+lines(forecast$pred,lwd=2,col="red")
+lines(forecast$pred+forecast$se*1.96,lwd=2,col="red")
+lines(forecast$pred-forecast$se*1.96,lwd=2,col="red")
+```
+
+With a negative coefficient close to zero, we get pretty much a straight line with no initial curvature. This applies to the confidence bounds as well.
+
+## With negative coefficient further away from zero
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+x_4=arima.sim(list(order=c(1,0,0), ar=-0.9),200)
+bt<-window(x_4,1,176)
+fit<-arima(bt,order=c(1,0,0),include.mean=FALSE)
+forecast<-predict(fit,n.ahead=24)
+ts.plot(x_4,lty=3, main="AR(1) and prediction")
+lines(bt,lwd=2)
+lines(forecast$pred,lwd=2,col="red")
+lines(forecast$pred+forecast$se*1.96,lwd=2,col="red")
+lines(forecast$pred-forecast$se*1.96,lwd=2,col="red")
+```
+
+Interestingly, we can see that the forecast in this case starts oscillating until it eventually converges to a value, for both the confidence intervals and the ordinary prediction. 
+
+# Performance of k-step ahead simulation of an AR(1)
+
+Utilizing $k=1$ often yields a type I error of <0.05, therefore fitting a 5% tolerance.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+k = 1
+I=rep(0,times=1000)
+for (i in 1:1000){
+  x_5=arima.sim(list(order=c(1,0,0), ar=0.8),200)
+  bt<-window(x_5,1,200-k)
+  fit<-arima(bt,order=c(1,0,0),include.mean=FALSE)
+  forecast<-predict(fit,n.ahead=k)
+  if (x_5[200]<forecast$pred[k]-forecast$se[k]*1.96){
+    I[i]=1}
+  if (x_5[200]>forecast$pred[k]+forecast$se[k]*1.96){
+    I[i]=1}
+  
+}
+errorI=sum(I)/1000
+confidence=1-errorI
+errorI
+```
+
+For any $k>1$ we can certainly get values under the threshold of 5%, however, it is less likely.
+
+Here we try $k=5$:
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+k = 5
+I=rep(0,times=1000)
+for (i in 1:1000){
+  x_5=arima.sim(list(order=c(1,0,0), ar=0.8),200)
+  bt<-window(x_5,1,200-k)
+  fit<-arima(bt,order=c(1,0,0),include.mean=FALSE)
+  forecast<-predict(fit,n.ahead=k)
+  if (x_5[200]<forecast$pred[k]-forecast$se[k]*1.96){
+    I[i]=1}
+  if (x_5[200]>forecast$pred[k]+forecast$se[k]*1.96){
+    I[i]=1}
+  
+}
+errorI=sum(I)/1000
+confidence=1-errorI
+errorI
+```
+
+Either way, given the randomness of the process, whether we got a better or worse type I error % entirely depends on randomness. So picking $k=1$ seems more plausible, as it seems more likely to yield a better type I error %.
+
+# Forecasting of Lynx series
+
+Our forecast sort of recreates the observations with decaying weights. Similar to earlier, we have a converging oscillation which eventually returns our series' average (0). Both confidence bounds exhibit the same behavior and the convergence results in a value, (~ 4, ~ -4) for each bound.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+lynx<-read.table('./lynx.csv')
+llynx<-log(lynx)
+bt<-window(llynx[1:100])
+fit<-arima(bt,order=c(2,0,0))
+forecast<-predict(fit,n.ahead=24)
+ts.plot(llynx,lty=3, main="Lynx series and prediction")
+lines(bt,lwd=2)
+lines(forecast$pred,lwd=2,col="red")
+lines(forecast$pred+forecast$se*1.96,lwd=2,col="red")
+lines(forecast$pred-forecast$se*1.96,lwd=2,col="red")
+```
+
+# Forecasting of an MA(1)
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+x_6=arima.sim(list(order=c(0,0,1), ma=0.7),200)
+bt<-window(x_6,1,176)
+fit<-arima(bt,order=c(0,0,1),include.mean=FALSE)
+forecast<-predict(fit,n.ahead=24)
+ts.plot(x_6,lty=3, main="MA(1) and prediction")
+lines(bt,lwd=2)
+lines(forecast$pred,lwd=2,col="red")
+lines(forecast$pred+forecast$se*1.96,lwd=2,col="red")
+lines(forecast$pred-forecast$se*1.96,lwd=2,col="red")
+```
+
+When forecasting we obtain values in straight lines, however, the first observation of both the bounds and the average are different from the rest of the values in the forecasted lines.
+
+# Forecasting of an MA(5)
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+x_7=arima.sim(list(ma=c(0.7,0.2,-0.3,-0.1,0.8)),200)
+bt<-window(x_7,1,176)
+fit<-arima(bt,order=c(0,0,5),include.mean=FALSE)
+forecast<-predict(fit,n.ahead=24)
+ts.plot(x_7,lty=3, main="MA(5) and prediction")
+lines(bt,lwd=2)
+lines(forecast$pred,lwd=2,col="red")
+lines(forecast$pred+forecast$se*1.96,lwd=2,col="red")
+lines(forecast$pred-forecast$se*1.96,lwd=2,col="red")
+```
+
+MA(5) exhibits the same behavior as MA(1), where the amount of coefficients in our MA process also, in turn, is the amount of values that differ from the average (in the average prediction) and the bounds.
+
+# Forecasting of an ARMA(1,5)
+
+Considering that an ARMA(1,5) model is essentially a mix of AR(1) and MA(5) models, we apply the same observations we noticed before. 
+
+Considering the size of our AR(1) coefficient $\phi=0.85$, we eventually obtain a straight line, however it takes a significantly higher amount of observations to eventually converge to a value and obtain a straight line. We also notice that given the amount of $\theta$ coefficients for the MA(5) model, we have 5 little bumps at the start of the average and bound forecast lines. These 5 bumps are different values for the forecast.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+x_8=arima.sim(list(ar=0.85,ma=c(0.7,0.2,-0.3,-0.1,0.8)),200)
+bt<-window(x_8,1,176)
+fit<-arima(bt,order=c(1,0,5),include.mean=FALSE)
+forecast<-predict(fit,n.ahead=24)
+ts.plot(x_8,lty=3, main="ARMA(1,5) and prediction")
+lines(bt,lwd=2)
+lines(forecast$pred,lwd=2,col="red")
+lines(forecast$pred+forecast$se*1.96,lwd=2,col="red")
+lines(forecast$pred-forecast$se*1.96,lwd=2,col="red")
+```
+
+
+# Check and discuss through simulation the performance of one-step ahead and k-step ahead forecast of AR(p) and MA(q) processes
+
+## one-step ahead and k-step ahead forecast of AR(p)
+
+We run a simulation utilizing an AR(3) process, and the algorithm goes as follows:
+
+- We first create the process 10 times and obtain the confidence and type I error per iteration
+
+- After running this 10 times we obtain the mean type I error and the mean confidence for the 10 different processes (although the processes do have the same coefficient, we reduce randomness by repeating it several times)
+
+- We then construct the following table with the results per k
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+ks=c(1,3,10)
+type1error <- rep(0, length(ks))
+confidences <- rep(0, length(ks))
+for (ki in 1:length(ks)) {
+    k = ks[ki]
+    error1 = rep(0,10)
+    confid1 = rep(0,10)
+    for (s in 1:10) {
+        I=rep(0,times=1000)
+        for (i in 1:1000){
+        x=arima.sim(list(order=c(3,0,0), ar=c(0.7,-0.3,0.3)),200)
+        bt<-window(x,1,200-k)
+        fit<-arima(bt,order=c(3,0,0),include.mean=FALSE)
+        forecast<-predict(fit,n.ahead=k)
+        if (x[200]<forecast$pred[ki]-forecast$se[ki]*1.96){
+            I[i]=1}
+        if (x[200]>forecast$pred[ki]+forecast$se[ki]*1.96){
+            I[i]=1}
+        
+        }
+        errorI=sum(I)/1000
+        confidence=1-errorI
+        error1[s] = errorI
+        confid1[s] = confidence
+    }
+    type1error[ki] = mean(error1)
+    confidences[ki] = mean(confid1)
+}   
+```
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+knitr::kable(
+    data.frame(k=ks, typeIerror=type1error, confidence=confidences),
+    booktabs=TRUE,
+    longtable=TRUE,
+    caption="type I error and confidence per k for AR(3)"
+)
+```
+
+We use 3 different Ks, therefore: $k \in \{1, 3, 10\}$.
+
+From the results we can clearly see how increasing $k$ clearly tends to increase significantly the probability of type I error, and therefore the confidence
+
+### one-step ahead and k-step ahead forecast of MA(q)
+
+We repeat the exact same process as before for an MA(3) process to watch the performance impact of increasing $k$.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+ks=c(1,3,10,20)
+type1error <- rep(0, length(ks))
+confidences <- rep(0, length(ks))
+for (ki in 1:length(ks)) {
+    k = ks[ki]
+    error1 = rep(0,10)
+    confid1 = rep(0,10)
+    for (s in 1:10) {
+        I=rep(0,times=1000)
+        for (i in 1:1000){
+        x=arima.sim(list(order=c(0,0,3), ma=c(0.7,-0.3,0.3)),200)
+        bt<-window(x,1,200-k)
+        fit<-arima(bt,order=c(3,0,0),include.mean=FALSE)
+        forecast<-predict(fit,n.ahead=k)
+        if (x[200]<forecast$pred[ki]-forecast$se[ki]*1.96){
+            I[i]=1}
+        if (x[200]>forecast$pred[ki]+forecast$se[ki]*1.96){
+            I[i]=1}
+        
+        }
+        errorI=sum(I)/1000
+        confidence=1-errorI
+        error1[s] = errorI
+        confid1[s] = confidence
+    }
+    type1error[ki] = mean(error1)
+    confidences[ki] = mean(confid1)
+}   
+
+```
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+knitr::kable(
+    data.frame(k=ks, typeIerror=type1error, confidence=confidences),
+    booktabs=TRUE,
+    longtable=TRUE,
+    caption="type I error and confidence per k for MA(3)"
+)
+```
+
+For the MA(3) process used as example we can see that the same conclusion can't be made for it vs an AR(3) process. A higher $k$ does not necessarily mean a significant impact in performance. So we don't necessarily need to select a lower $k$, and we can actually go higher than this without any significant increase in type I error.
