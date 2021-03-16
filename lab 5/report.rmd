@@ -24,7 +24,7 @@ library(sarima)
 
 We simulate a Seasonal ARIMA of 300 observations and components $(p,d,q) = (0,1,1)$, $(P,D,Q) = (0,1,1)$ and $m = 12$. It also has $SMA = 0.3$, and $MA = -0.3$  
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, eval=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 x<-sim_sarima(n=300,
               model=list(ma=-0.3,sma=0.3,iorder=1,siorder=1,nseasons=12))
 ```
@@ -236,7 +236,7 @@ Our forecast sort of recreates the observations with decaying weights. Similar t
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 lynx<-read.table('./lynx.csv')
 llynx<-log(lynx)
-bt<-window(llynx[1:100])
+bt<-window(llynx[1:100,])
 fit<-arima(bt,order=c(2,0,0))
 forecast<-predict(fit,n.ahead=24)
 ts.plot(llynx,lty=3, main="Lynx series and prediction")
